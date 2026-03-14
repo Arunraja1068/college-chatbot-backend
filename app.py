@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)   # allow frontend requests
 
 # -------------------------------
-# Helper Functions for Scraping
+# Helper Function for Scraping
 # -------------------------------
 def scrape_page(url):
     try:
@@ -64,6 +64,16 @@ library_data = [
     "Digital resources available via student portal"
 ]
 
+admissions_eligibility = [
+    """Regular Admission (First Year)
+Pass 10+2 (Academic Stream) with Maths, Physics, Chemistry.
+Or pass 10+2 (Vocational Stream – Engineering/Technology).
+
+Lateral Entry (Direct to 3rd Semester)
+Diploma in Engineering/Technology (Tamil Nadu State Board or equivalent).
+Or B.Sc. (Maths as a subject) – must take 2 extra engineering subjects in 3rd & 4th semesters."""
+]
+
 # -------------------------------
 # API Routes
 # -------------------------------
@@ -95,6 +105,10 @@ def get_departments():
 def get_library():
     return jsonify({"library": library_data})
 
+@app.route('/getAdmissionEligibility')
+def get_admission_eligibility():
+    return jsonify({"eligibility": admissions_eligibility})
+
 # -------------------------------
 # Exam Schedule by Year (Scraping)
 # -------------------------------
@@ -115,7 +129,7 @@ def get_exam_schedule_fourth_year():
     return jsonify({"fourth_year_exam": scrape_exam_schedule("Fourth Year")})
 
 # -------------------------------
-# Parent Queries
+# Parent-Focused Queries
 # -------------------------------
 @app.route('/getFees')
 def get_fees():
