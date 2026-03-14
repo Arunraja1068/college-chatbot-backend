@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)   # allow frontend requests
 
 # -------------------------------
-# Helper Function for Scraping
+# Helper Functions for Scraping
 # -------------------------------
 def scrape_page(url):
     try:
@@ -55,7 +55,8 @@ departments_data = [
     "Artificial Intelligence and Data Science",
     "Electronics and Communication Engineering",
     "Mechanical Engineering",
-    "Computer Science and Business System"
+    "Computer Science and Business System",
+    "Information Technology"
 ]
 
 library_data = [
@@ -112,6 +113,29 @@ def get_exam_schedule_third_year():
 @app.route('/getExamScheduleFourthYear')
 def get_exam_schedule_fourth_year():
     return jsonify({"fourth_year_exam": scrape_exam_schedule("Fourth Year")})
+
+# -------------------------------
+# Parent Queries
+# -------------------------------
+@app.route('/getFees')
+def get_fees():
+    data = scrape_page("https://www.jeppiaarinstitute.org/fees.php")
+    return jsonify({"fees": data})
+
+@app.route('/getHostel')
+def get_hostel():
+    data = scrape_page("https://www.jeppiaarinstitute.org/hostel.php")
+    return jsonify({"hostel": data})
+
+@app.route('/getTransport')
+def get_transport():
+    data = scrape_page("https://www.jeppiaarinstitute.org/transport.php")
+    return jsonify({"transport": data})
+
+@app.route('/getParentSupport')
+def get_parent_support():
+    data = scrape_page("https://www.jeppiaarinstitute.org/support.php")
+    return jsonify({"support": data})
 
 # -------------------------------
 # Run Server
