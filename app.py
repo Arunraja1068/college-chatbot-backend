@@ -1,13 +1,35 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
+import requests
+from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 CORS(app)   # allow frontend requests
 
 # -------------------------------
-# Sample Data (replace with scraping later)
+# Helper Function for Scraping
 # -------------------------------
+def scrape_page(url):
+    try:
+        page = requests.get(url)
+        soup = BeautifulSoup(page.content, "html.parser")
+        return soup.get_text(separator="\n", strip=True)
+    except Exception as e:
+        return f"Error scraping {url}: {str(e)}"
 
+def scrape_exam_schedule(year_keyword):
+    url = "https://www.jeppiaarinstitute.org/exam.php"
+    page = requests.get(url)
+    soup = BeautifulSoup(page.content, "html.parser")
+    text = soup.get_text(separator="\n", strip=True)
+
+    # Filter only lines containing the year keyword
+    lines = [line for line in text.split("\n") if year_keyword.lower() in line.lower()]
+    return "\n".join(lines) if lines else f"No schedule found for {year_keyword}"
+
+# -------------------------------
+# Sample Data (can be replaced with scraping)
+# -------------------------------
 exam_schedule_data = [
     "Semester Exams start on March 20",
     "Hall tickets available online from March 15"
@@ -31,7 +53,9 @@ placements_data = [
 departments_data = [
     "Computer Science and Engineering",
     "Artificial Intelligence and Data Science",
-    "Electronics and Communication Engineering"
+    "Electronics and Communication Engineering",
+    "Mechanical Engineering",
+    "Computer Science and Business System"
 ]
 
 library_data = [
@@ -42,7 +66,6 @@ library_data = [
 # -------------------------------
 # API Routes
 # -------------------------------
-
 @app.route('/')
 def home():
     return "✅ College Chatbot Backend is Running!"
@@ -70,6 +93,25 @@ def get_departments():
 @app.route('/getLibrary')
 def get_library():
     return jsonify({"library": library_data})
+
+# -------------------------------
+# Exam Schedule by Year (Scraping)
+# -------------------------------
+@app.route('/getExamScheduleFirstYear')
+def get_exam_schedule_first_year():
+    return jsonify({"first_year_exam": scrape_exam_schedule("First Year")})
+
+@app.route('/getExamScheduleSecondYear')
+def get_exam_schedule_second_year():
+    return jsonify({"second_year_exam": scrape_exam_schedule("Second Year")})
+
+@app.route('/getExamScheduleThirdYear')
+def get_exam_schedule_third_year():
+    return jsonify({"third_year_exam": scrape_exam_schedule("Third Year")})
+
+@app.route('/getExamScheduleFourthYear')
+def get_exam_schedule_fourth_year():
+    return jsonify({"fourth_year_exam": scrape_exam_schedule("Fourth Year")})
 
 # -------------------------------
 # Run Server
