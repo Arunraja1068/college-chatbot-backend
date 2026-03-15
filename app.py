@@ -46,8 +46,11 @@ admissions_data = [
 ]
 
 placements_data = [
-    "Infosys campus drive on April 18",
-    "TCS interviews scheduled for April 25"
+    """- Placement Rate: ~80–85% of B.Tech students
+- Highest Package: ₹24 LPA
+- Average Package: ~₹4.5 LPA
+- Top Offers: Up to ₹10 LPA
+- Key Recruiters: Amazon, TCS, Wipro, Google"""
 ]
 
 departments_data = [
@@ -72,6 +75,37 @@ Or pass 10+2 (Vocational Stream – Engineering/Technology).
 Lateral Entry (Direct to 3rd Semester)
 Diploma in Engineering/Technology (Tamil Nadu State Board or equivalent).
 Or B.Sc. (Maths as a subject) – must take 2 extra engineering subjects in 3rd & 4th semesters."""
+]
+
+scholarshi_data = [
+    """- Govt. of Tamil Nadu Scholarships (BC/SC/ST students – PMSS, FG)
+- Admission Scholarships
+- 100% for cutoff >185 (Maths, Physics, Chemistry)
+- Women Scholarship
+- Sports Scholarship
+- School Merit Scholarships
+- +1/+2 students scoring >480 in SSLC/CBSE"""
+]
+
+fees_data = [
+    """- Overall Fees (All Courses): ₹41,000 – ₹6 Lakhs
+- UG Fees (B.Tech): ₹1.65 Lakhs – ₹2.2 Lakhs
+- PG Fees (M.Tech/MBA): ₹41,000"""
+]
+
+hostel_data = [
+    """- Separate hostels for boys & girls
+- Spacious rooms with attached bath, hot/cold water
+- Dining hall with steam cooking, mineral water, uninterrupted power & water
+- Recreation halls with TV, reading room, computer room, gymnasium
+- STD/ISD facilities, newspapers, assistant wardens for guidance
+- Strict discipline rules, formal dress code, ragging prohibited"""
+]
+
+transport_data = [
+    """- Fleet of 19 buses covering city & nearby areas
+- Transport arranged for all students to ensure punctuality
+- Extended service for special classes, placements, training, industry visits, NSS camps"""
 ]
 
 # -------------------------------
@@ -109,6 +143,10 @@ def get_library():
 def get_admission_eligibility():
     return jsonify({"eligibility": admissions_eligibility})
 
+@app.route('/getscholarshi')
+def get_scholarshi():
+    return jsonify({"scholarshi": scholarshi_data})
+
 # -------------------------------
 # Exam Schedule by Year (Scraping)
 # -------------------------------
@@ -133,18 +171,15 @@ def get_exam_schedule_fourth_year():
 # -------------------------------
 @app.route('/getFees')
 def get_fees():
-    data = scrape_page("https://www.jeppiaarinstitute.org/fees.php")
-    return jsonify({"fees": data})
+    return jsonify({"fees": fees_data})
 
 @app.route('/getHostel')
 def get_hostel():
-    data = scrape_page("https://www.jeppiaarinstitute.org/hostel.php")
-    return jsonify({"hostel": data})
+    return jsonify({"hostel": hostel_data})
 
 @app.route('/getTransport')
 def get_transport():
-    data = scrape_page("https://www.jeppiaarinstitute.org/transport.php")
-    return jsonify({"transport": data})
+    return jsonify({"transport": transport_data})
 
 @app.route('/getParentSupport')
 def get_parent_support():
