@@ -109,6 +109,17 @@ transport_data = [
 ]
 
 # -------------------------------
+# Syllabus Links (official website)
+# -------------------------------
+syllabus_links = {
+    "cse": "https://www.jeppiaarinstitute.org/wp-content/uploads/2024/09/R2024-Curriculum-and-Syllabus-CSE.pdf",
+    "it": "https://www.jeppiaarinstitute.org/wp-content/uploads/2025/07/Dept-of-IT-Curriculum-and-Syllabus_.pdf",
+    "ai&ds": "https://www.jeppiaarinstitute.org/wp-content/uploads/2025/07/SYLLABUS-OF-AIDS-1.pdf",
+    "ece": "https://www.jeppiaarinstitute.org/wp-content/uploads/2025/07/R2024-ECE-Updated-Syllabus-as-on-2.3.26-till-5th-Sem-1.pdf",
+    "mech": "https://www.jeppiaarinstitute.org/wp-content/uploads/2024/09/R2024-Curriculum-and-Syllabus-Mechanical.pdf"
+}
+
+# -------------------------------
 # API Routes
 # -------------------------------
 @app.route('/')
@@ -185,6 +196,17 @@ def get_transport():
 def get_parent_support():
     data = scrape_page("https://www.jeppiaarinstitute.org/support.php")
     return jsonify({"support": data})
+
+# -------------------------------
+# Syllabus Endpoint
+# -------------------------------
+@app.route('/getSyllabus/<course>')
+def get_syllabus(course):
+    link = syllabus_links.get(course.lower())
+    if link:
+        return jsonify({"syllabus_link": link})
+    else:
+        return jsonify({"error": f"No syllabus found for {course}"}), 404
 
 # -------------------------------
 # Run Server
